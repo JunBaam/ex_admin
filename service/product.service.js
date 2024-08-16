@@ -1,22 +1,22 @@
 const Product = require("../schema/product.schema");
 const connectDB = require("../config/db");
+const uuidV4 = require("uuid.v4");
 
 const createProduct = async (product) => {
-  await connectDB();
-
+  const { dbUrl, ...productData } = product;
+  await connectDB(dbUrl);
+  const productId = uuidV4();
+  console.log({ productId });
   console.log("제품확인", product);
   try {
     const createProduct = await Product.create({
-      productId: product.productId,
-      title: product.title,
-      stock: product.stock,
-      price: product.price,
-      imgUrl: product.imgUrl,
-      description: product.description,
+      ...productData,
+      productId,
     });
     console.log("제품가져오기", createProduct);
+    return createProduct;
   } catch (err) {
-    console.log("서비스에러", err);
+    throw err;
   }
 };
 

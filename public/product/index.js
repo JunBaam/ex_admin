@@ -2,16 +2,15 @@ const dynamicDbUrl = document.getElementById("dbUrl");
 const submitButton = document.getElementById("submit-button");
 
 submitButton.addEventListener("click", async (event) => {
+  let isLoading = false;
   console.log("click");
-  event.preventDefault();
 
   const randomId = Math.floor(Math.random() * 200 + 1);
   const imageUrl = `https://picsum.photos/id/${randomId}/200/300`;
 
   const productDataObject = {
-    productId: randomId,
     title: document.getElementById("title").value,
-
+    dbUrl: document.getElementById("dbUrl").value,
     // title: document.getElementById("title").value + randomId,
     description: document.getElementById("description").value,
     stock: Number(document.getElementById("stock").value),
@@ -23,6 +22,8 @@ submitButton.addEventListener("click", async (event) => {
 
   console.log("데이터 확인", productDataJson);
   try {
+    isLoading = true;
+    submitButton.setAttribute("disabled", true);
     const createProduct = await fetch("/api/product", {
       method: "post",
       body: productDataJson,
@@ -32,7 +33,7 @@ submitButton.addEventListener("click", async (event) => {
     });
 
     if (createProduct.ok) {
-      document.getElementById("productForm").reset();
+      // document.getElementById("productForm").reset();
 
       const product = await createProduct.json();
       console.log("생성제품", product);
@@ -40,5 +41,8 @@ submitButton.addEventListener("click", async (event) => {
   } catch (error) {
     alert("제품생성 실패 ㅜㅜ");
     console.log("제품생성 실패", error);
+  } finally {
+    isLoading = false;
+    submitButton.removeAttribute("disabled");
   }
 });

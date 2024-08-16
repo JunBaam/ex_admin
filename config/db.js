@@ -1,35 +1,43 @@
 require("dotenv").config();
-
 const mongoose = require("mongoose");
-
+let connectedDbUrl = "";
 const CONNECTED_SIGNAL = [1, 2];
 const connectDB = async (dbUrl) => {
+  console.log("mongoose.connection.readyState", mongoose.connection.readyState);
   try {
-    mongoose.set("strictQuery", false);
+    // mongoose.set("strictQuery", false);
 
-    const connectedDbUrl =
-      mongoose.connection.host +
-      ":" +
-      mongoose.connection.port +
-      "/" +
-      mongoose.connection.name;
-    if (connectedDbUrl && connectedDbUrl !== dbUrl) {
+    const { host, port, name } = mongoose.connection;
+    // const connectedDbUrl =
+    //   mongoose.connection.host +
+    //   ":" +
+    //   mongoose.connection.port +
+    //   "/" +
+    //   mongoose.connection.name;
+
+    const isNonConnected = [host, port, name].some((prop) => !prop);
+    console.log(connectedDbUrl, dbUrl);
+    if (!isNonConnected && connectedDbUrl !== dbUrl) {
       const isDistroyed = await mongoose.connection.destroy();
-      console.log({ isDistroyed });
       if (isDistroyed) {
-        console.log("asdasdasd");
-        // await mongoose.connect(dbUrl ?? process.env.MONGODB_URL);
-        await mongoose.connect(process.env.MONGODB_URL);
-
-        // console.log(`Database Connected: ${mongoose.connection.host}`);
+        await mongoose.connect(dbUrl);
+        connectedDbUrl = dbUrl;
         return mongoose;
       }
+      return;
     }
+
     if (CONNECTED_SIGNAL.includes(mongoose.connection.readyState)) {
+      console.log("asdasdasdasd");
+      // await mongoose.connect(dbUrl);
+      // connectedDbUrl = dbUrl;
       return mongoose;
     } else {
-      await mongoose.connect(dbUrl ?? process.env.MONGODB_URL);
-      console.log(`Database Connected: ${conn.connection.host}`);
+      console.log("==-=-=23918240982049tsdnvjk");
+
+      await mongoose.connect(dbUrl);
+      connectedDbUrl = dbUrl;
+      // console.log(`Database Connected: ${mo.connection.host}`);
       return mongoose;
     }
   } catch (error) {

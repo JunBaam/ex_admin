@@ -1,11 +1,10 @@
-// const mongoose = require("../db_init");
 const mongoose = require("mongoose");
 
 const { String, Number } = mongoose.Schema.Types;
 const productSchema = new mongoose.Schema(
   {
     productId: {
-      type: Number,
+      type: String,
       required: true,
     },
     title: {
