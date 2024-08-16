@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>제품 생성</title>
+    <link rel="stylesheet" href="./style.css" />
+
+    <script defer src="./index.js"></script>
+  </head>
+  <body>
+    <div class="form-container">
+      <form id="productForm">
+        <h2>제품 생성</h2>
+
+        <label for="dbUrl">너의 DB주소는?</label>
+        <input type="text" id="dbUrl" name="dbUrl" required /><br />
+
+        <label for="title">상품명:</label>
+        <input type="text" id="title" name="title" required /><br />
+
+        <label for="description">상품설명:</label>
+        <textarea id="description" name="description" required></textarea><br />
+
+        <label for="stock">상품수:</label>
+        <input type="number" id="stock" name="stock" required /><br />
+
+        <label for="price">가격:</label>
+        <input type="number" id="price" name="price" required /><br />
+
+        <label for="imgUrl">Image URL:</label>
+        <input type="url" id="imgUrl" name="imgUrl" required /><br />
+
+        <button id="submit-button" type="submit">제품생성</button>
+      </form>
+    </div>
+  </body>
+</html>
